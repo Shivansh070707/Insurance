@@ -180,11 +180,12 @@ contract InsuranceVault {
 
     function calculateRewards(address user) public view returns (uint256) {
         uint256 totalRewards = 0;
+        uint lastOptInTimeUser=lastOptInTime[user];
         Product[] memory opts = _optInProducts[user];
         for (uint256 i = 1; i < opts.length; i++) {
             if (userShares[user][products[i].productId] > 0) {
                 uint256 timeWeightedRisk = block.timestamp -
-                    lastOptInTime[user];
+                    lastOptInTimeUser;
                 timeWeightedRisk *= products[i].riskLevel;
 
                 uint256 timeWeightedRewards = timeWeightedRisk *
